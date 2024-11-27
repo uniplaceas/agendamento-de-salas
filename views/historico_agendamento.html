@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico de Agendamentos</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #003B5C; /* Cor do brasão da UNEB */
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center; /* Centraliza horizontalmente */
+            align-items: center;     /* Centraliza verticalmente */
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: #f4f4f9;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Garante que os itens sejam centralizados */
+            box-sizing: border-box;
+        }
+
+        .header {
+            background-color: #006D93; /* Azul UNEB */
+            padding: 20px;
+            text-align: center;
+            border-radius: 15px;
+            width: 100%; /* Garante que a largura ocupe 100% do contêiner */
+            max-width: 1000px; /* Limita a largura máxima */
+        }
+
+        .header h1 {
+            margin: 0;
+            color: #ffffff;
+            font-size: 26px;
+        }
+
+        .history-container {
+            margin-top: 30px;
+            width: 100%; /* Garante que ocupe toda a largura disponível */
+            max-width: 1000px; /* Limita a largura máxima */
+            padding: 0 20px; /* Adiciona um padding lateral */
+            box-sizing: border-box;
+        }
+
+        .history-item {
+            background-color: #E2F1F8;
+            margin: 10px 0;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .history-item span {
+            font-size: 16px;
+            color: #003B5C;
+        }
+
+        .cancel-button {
+            background-color: #FF4C4C;
+            color: white;
+            padding: 10px 15px;
+            font-size: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .cancel-button:hover {
+            background-color: #D94343;
+        }
+
+        .status {
+            font-weight: bold;
+            font-size: 16px;
+            color: #006D93;
+        }
+
+        .cancelado {
+            color: #D94343; /* Cor para o status cancelado */
+        }
+
+        .logout-button {
+            background-color: #FF4C4C;
+            color: white;
+            padding: 12px 25px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 30px;
+            border: none;
+            display: block;
+            width: 100%;
+            max-width: 300px; /* Limita a largura máxima do botão */
+            margin-left: auto;
+            margin-right: auto; /* Centraliza o botão */
+        }
+
+        .logout-button:hover {
+            background-color: #D94343;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .history-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .cancel-button {
+                margin-top: 10px;
+                width: 100%;
+            }
+
+            .logout-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>Histórico de Agendamentos</h1>
+        </div>
+
+        <div class="history-container">
+            <div class="history-item">
+                <div>
+                    <span>Data: 2024-11-18</span><br>
+                    <span>Hora de Início: 10:00</span><br>
+                    <span>Hora de Término: 12:00</span><br>
+                    <span>Status: <span class="status">Confirmado</span></span>
+                </div>
+                <button class="cancel-button" onclick="cancelarAgendamento()">Cancelar</button>
+            </div>
+            
+            <div class="history-item">
+                <div>
+                    <span>Data: 2024-11-19</span><br>
+                    <span>Hora de Início: 14:00</span><br>
+                    <span>Hora de Término: 16:00</span><br>
+                    <span>Status: <span class="status">Confirmado</span></span>
+                </div>
+                <button class="cancel-button" onclick="cancelarAgendamento()">Cancelar</button>
+            </div>
+            
+            <div class="history-item">
+                <div>
+                    <span>Data: 2024-11-20</span><br>
+                    <span>Hora de Início: 08:00</span><br>
+                    <span>Hora de Término: 10:00</span><br>
+                    <span>Status: <span class="status cancelado">Cancelado</span></span>
+                </div>
+                <button class="cancel-button" onclick="cancelarAgendamento()">Cancelar</button>
+            </div>
+            
+            <!-- Mais itens de agendamento podem ser adicionados aqui -->
+        </div>
+
+        <!-- Botão de Logout -->
+        <button class="logout-button" onclick="logout()">Sair</button>
+    </div>
+
+    <script>
+        function cancelarAgendamento() {
+            if (confirm('Você realmente deseja cancelar este agendamento?')) {
+                alert('Agendamento cancelado com sucesso!');
+                // Aqui você pode implementar a lógica para remover ou alterar o agendamento na base de dados
+            }
+        }
+
+        function logout() {
+            alert('Você foi desconectado!');
+            // Lógica de logout (limpar sessão, redirecionamento, etc.)
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendar Sala - Professor</title>
+    
+    <!-- Inclusão do FullCalendar -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.css" rel="stylesheet">
+    <!-- Inclusão do jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Inclusão do FullCalendar -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.2.0/dist/locale/pt-br.js"></script>
+
+    <!-- Font Awesome para ícones -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #003B5C; /* Cor do brasão da UNEB */
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background-color: #f4f4f9;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            min-height: 600px;
+            overflow: hidden;
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            background-color: #006D93;
+            padding: 15px;
+            text-align: center;
+            border-radius: 10px;
+            width: 100%;
+        }
+
+        .header h1 {
+            margin: 0;
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .dropdown-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .calendar-and-form-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+            margin-top: 20px;
+            gap: 30px;
+        }
+
+        .calendar-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            color: #003B5C;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 60%; /* Aumentei a largura do calendário */
+            height: 380px; /* Ajustei a altura */
+            overflow-y: scroll;
+        }
+
+        .form-container {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #E2F1F8;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 35%; /* Aumentei um pouco a largura do formulário */
+        }
+
+        .form-container h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #003B5C;
+        }
+
+        .form-container input, .form-container select {
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            margin: 10px 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .form-container button {
+            background-color: #00719A;
+            color: white;
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 20px;
+        }
+
+        .form-container button:hover {
+            background-color: #005F74;
+        }
+
+        .dropdown-container select {
+            width: 100%;
+            max-width: 300px;
+            font-size: 16px;
+        }
+
+        /* FullCalendar custom styles */
+        #calendar {
+            max-width: 100%;
+            border-radius: 10px;
+            height: 100%;
+        }
+
+        .fc-event {
+            border-radius: 5px;
+        }
+
+        .fc-event.fc-event-solid-color {
+            background-color: #00719A !important;
+            color: white !important;
+        }
+
+        .fc-day-grid-event {
+            font-size: 14px;
+            padding: 5px;
+        }
+
+        .icon-container {
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+        }
+
+        .icon-container i {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>Agendar Sala - Professor</h1>
+        </div>
+
+        <!-- Dropdown para Seleção da Sala -->
+        <div class="dropdown-container">
+            <label for="salas" style="font-size: 18px; color: #003B5C;">Escolha a Sala:</label>
+            <select id="salas" name="salas">
+                <!-- Aqui vamos dinamicamente adicionar as salas -->
+                <option value="sala1">Sala 101</option>
+                <option value="sala2">Sala 102</option>
+                <option value="sala3">Sala 103</option>
+            </select>
+        </div>
+
+        <!-- Calendário e Formulário de Agendamento ao lado -->
+        <div class="calendar-and-form-container">
+            <!-- Calendário -->
+            <div class="calendar-container">
+                <div id="calendar"></div>
+            </div>
+
+            <!-- Formulário de Agendamento -->
+            <div class="form-container">
+                <h3>Detalhes do Agendamento</h3>
+                <div class="icon-container">
+                    <i class="fas fa-calendar-alt"></i>
+                    <input type="date" id="data" placeholder="Data do Agendamento">
+                </div>
+                <div class="icon-container">
+                    <i class="fas fa-clock"></i>
+                    <input type="time" id="horario_inicio" placeholder="Horário de Início">
+                </div>
+                <div class="icon-container">
+                    <i class="fas fa-clock"></i>
+                    <input type="time" id="horario_termino" placeholder="Horário de Término">
+                </div>
+                <button onclick="confirmarAgendamento()">Confirmar Agendamento</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            var eventos = [
+                {
+                    title: 'Sala 101 - Ocupado',
+                    start: '2024-11-18T10:00:00',
+                    end: '2024-11-18T12:00:00',
+                    backgroundColor: '#FF0000',
+                    textColor: '#ffffff'
+                },
+                {
+                    title: 'Sala 102 - Livre',
+                    start: '2024-11-18T14:00:00',
+                    end: '2024-11-18T16:00:00',
+                    backgroundColor: '#28A745',
+                    textColor: '#ffffff'
+                }
+            ];
+
+            $('#salas').change(function() {
+                var salaSelecionada = $(this).val();
+                carregarCalendario(salaSelecionada);
+            });
+
+            function carregarCalendario(sala) {
+                $('#calendar').fullCalendar('destroy');
+                $('#calendar').fullCalendar({
+                    locale: 'pt-br',
+                    events: eventos.filter(event => event.title.includes(sala)),
+                    eventClick: function(event) {
+                        $('#data').val(event.start.format('YYYY-MM-DD'));
+                        $('#horario_inicio').val(event.start.format('HH:mm'));
+                        $('#horario_termino').val(event.end.format('HH:mm'));
+                    },
+                    height: 'auto',
+                    contentHeight: 'auto',
+                    header: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'month,agendaWeek,agendaDay'
+                    }
+                });
+            }
+
+            carregarCalendario('sala1'); // Carregar o calendário inicial para Sala 101
+        });
+
+        function confirmarAgendamento() {
+            var data = $('#data').val();
+            var inicio = $('#horario_inicio').val();
+            var termino = $('#horario_termino').val();
+            if (data && inicio && termino) {
+                alert("Agendamento confirmado para " + data + " das " + inicio + " às " + termino);
+            } else {
+                alert("Por favor, preencha todos os campos.");
+            }
+        }
+    </script>
+
+</body>
+</html>
